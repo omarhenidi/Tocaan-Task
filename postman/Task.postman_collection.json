@@ -1,0 +1,2039 @@
+{
+  "info": {
+    "_postman_id": "020e3334-e8d9-48a5-8f59-3368ca225f98",
+    "name": "Task",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52924230",
+    "_collection_link": "https://go.postman.co/collection/52924230-020e3334-e8d9-48a5-8f59-3368ca225f98?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Admin",
+      "description": "Admin API. Requires JWT (Bearer token). User must have admin role. Endpoints: login, orders (CRUD, filter by status/user_id, paginated), products (CRUD, paginated), users (CRUD, paginated). Set {{admin_url_v1}} (e.g. http://localhost:8000/api/v1/admin). Use Admin > Auth > Login to obtain admin_token.",
+      "item": [
+        {
+          "name": "Auth",
+          "item": [
+            {
+              "name": "Login",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.environment.set(\"admin_token\", pm.response.json().data.token);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\":\"admin@gmail.com\",\n    \"password\":\"123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{admin_url_v1}}/login",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Login – Success (200)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"email\":\"admin@gmail.com\",\n    \"password\":\"123456\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/auth/login",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Login successful\",\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3YxL2NsaWVudC9hdXRoL2xvZ2luIiwiaWF0IjoxNzcyNjgxNTI0LCJleHAiOjE3NzI2ODUxMjQsIm5iZiI6MTc3MjY4MTUyNCwianRpIjoibDUwckFiWWtPQjVyck9lZyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.xbfhQXKjuAQB8j5VW4HGOw4hbROq_WjNMBie0jX4NKY\",\n        \"token_type\": \"bearer\",\n        \"expires_in\": 3600,\n        \"user\": {\n            \"id\": 1,\n            \"name\": \"Omar Henidi\",\n            \"email\": \"omarhenidi@gmail.com\"\n        }\n    }\n}"
+                },
+                {
+                  "name": "Login – Invalid Credentials (401)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"email\":\"omarhenidi@gmail.com\",\n    \"password\":\"12345678\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/auth/login",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n  \"success\": false,\n  \"message\": \"Invalid credentials\"\n}"
+                }
+              ]
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Products",
+          "item": [
+            {
+              "name": "List Products",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{admin_url_v1}}/products",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "List Products Success (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{admin_url_v1}}/products",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "products"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Products retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": 4,\n            \"name\": \"Sample Product\",\n            \"description\": \"Product description\",\n            \"price\": 29.99,\n            \"created_at\": \"2026-03-05T04:33:28+00:00\",\n            \"updated_at\": \"2026-03-05T04:33:28+00:00\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Product C\",\n            \"description\": \"Sample product C for orders.\",\n            \"price\": 15.99,\n            \"created_at\": \"2026-03-05T04:21:43+00:00\",\n            \"updated_at\": \"2026-03-05T04:21:43+00:00\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Product B\",\n            \"description\": \"Sample product B for orders.\",\n            \"price\": 25,\n            \"created_at\": \"2026-03-05T04:21:43+00:00\",\n            \"updated_at\": \"2026-03-05T04:21:43+00:00\"\n        },\n        {\n            \"id\": 1,\n            \"name\": \"Updated Product Name\",\n            \"description\": \"Sample product A for orders.\",\n            \"price\": 39.99,\n            \"created_at\": \"2026-03-05T04:21:43+00:00\",\n            \"updated_at\": \"2026-03-05T04:33:35+00:00\"\n        }\n    ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "Create Product",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Sample Product\",\n    \"description\": \"Product description\",\n    \"price\": 29.99\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{admin_url_v1}}/products",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Create Product Success (200)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"name\": \"Sample Product\",\n    \"description\": \"Product description\",\n    \"price\": 29.99\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{admin_url_v1}}/products",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "products"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Product created successfully.\",\n    \"data\": {\n        \"id\": 6,\n        \"name\": \"Sample Product\",\n        \"description\": \"Product description\",\n        \"price\": 29.99,\n        \"created_at\": \"2026-03-06T11:04:02+00:00\",\n        \"updated_at\": \"2026-03-06T11:04:02+00:00\"\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Show Product",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{admin_url_v1}}/products/:product",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "products",
+                    ":product"
+                  ],
+                  "variable": [
+                    {
+                      "key": "product",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Show Product Success (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{admin_url_v1}}/products/:product",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "products",
+                        ":product"
+                      ],
+                      "variable": [
+                        {
+                          "key": "product",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Product retrieved successfully\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Updated Product Name\",\n        \"description\": \"Sample product A for orders.\",\n        \"price\": 39.99,\n        \"created_at\": \"2026-03-05T04:21:43+00:00\",\n        \"updated_at\": \"2026-03-05T04:33:35+00:00\"\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Update Product",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Updated Product Name\",\n    \"price\": 39.99\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{admin_url_v1}}/products/:product",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "products",
+                    ":product"
+                  ],
+                  "variable": [
+                    {
+                      "key": "product",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Update Product Success (200)",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"name\": \"Updated Product Name\",\n    \"price\": 39.99\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{admin_url_v1}}/products/:product",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "products",
+                        ":product"
+                      ],
+                      "variable": [
+                        {
+                          "key": "product",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Product updated successfully.\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Updated Product Name\",\n        \"description\": \"Sample product A for orders.\",\n        \"price\": 39.99,\n        \"created_at\": \"2026-03-05T04:21:43+00:00\",\n        \"updated_at\": \"2026-03-05T04:33:35+00:00\"\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Delete Product",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{admin_url_v1}}/products/:product",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "products",
+                    ":product"
+                  ],
+                  "variable": [
+                    {
+                      "key": "product",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Delete Product Success (200)",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{admin_url_v1}}/products/:product",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "products",
+                        ":product"
+                      ],
+                      "variable": [
+                        {
+                          "key": "product",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Product deleted successfully\",\n    \"data\": []\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Orders",
+          "item": [
+            {
+              "name": "List Orders",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{admin_url_v1}}/orders",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "List Orders",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{admin_url_v1}}/orders",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Orders retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"user_id\": 2,\n            \"order_number\": \"ORD-69A9119BCD118-20260305\",\n            \"customer_name\": \"Omar Henidi\",\n            \"customer_email\": \"omarhenidi@gmail.com\",\n            \"customer_phone\": null,\n            \"status\": \"pending\",\n            \"payment_status\": \"un_paid\",\n            \"total_price\": 129.98,\n            \"currency\": \"USD\",\n            \"created_at\": \"2026-03-05T05:16:11+00:00\",\n            \"updated_at\": \"2026-03-05T05:16:11+00:00\",\n            \"items\": [\n                {\n                    \"id\": 1,\n                    \"product_id\": null,\n                    \"product_name\": \"Updated Product Name\",\n                    \"quantity\": 2,\n                    \"price\": 39.99,\n                    \"line_total\": 79.98\n                },\n                {\n                    \"id\": 2,\n                    \"product_id\": 2,\n                    \"product_name\": \"Product B\",\n                    \"quantity\": 2,\n                    \"price\": 25,\n                    \"line_total\": 50\n                }\n            ],\n            \"transactions\": []\n        }\n    ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "Show Order",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{admin_url_v1}}/orders/:order",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":order"
+                  ],
+                  "variable": [
+                    {
+                      "key": "order",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Show Order Success",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders/:order",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Order retrieved successfully\",\n    \"data\": {\n        \"id\": 1,\n        \"user_id\": 2,\n        \"order_number\": \"ORD-69A9119BCD118-20260305\",\n        \"customer_name\": \"Omar Henidi\",\n        \"customer_email\": \"omarhenidi@gmail.com\",\n        \"status\": \"pending\",\n        \"payment_status\": \"un_paid\",\n        \"total_price\": 129.98,\n        \"currency\": \"USD\",\n        \"created_at\": \"2026-03-05T05:16:11+00:00\",\n        \"updated_at\": \"2026-03-05T05:16:11+00:00\",\n        \"items\": [\n            {\n                \"id\": 1,\n                \"product_id\": null,\n                \"product_name\": \"Updated Product Name\",\n                \"quantity\": 2,\n                \"price\": 39.99,\n                \"line_total\": 79.98\n            },\n            {\n                \"id\": 2,\n                \"product_id\": 2,\n                \"product_name\": \"Product B\",\n                \"quantity\": 2,\n                \"price\": 25,\n                \"line_total\": 50\n            }\n        ],\n        \"transactions\": []\n    }\n}"
+                },
+                {
+                  "name": "Show Order Error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders/:order",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": false,\n    \"message\": \"No query results for model [App\\\\Models\\\\Order] :order\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Create Order",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"items\": [\n        {\n            \"product_id\": 3,\n            \"quantity\": 2\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 2\n        }\n    ],\n    \"payment_method\": \"credit_card\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{admin_url_v1}}/orders",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Create Order Success",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"items\": [\n        {\n            \"product_id\": 3,\n            \"quantity\": 2\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 2\n        }\n    ]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": null
+                },
+                {
+                  "name": "Create Order Error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"items\": [\n        {\n            \"product_id\": 3,\n            \"quantity\": 2\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 2\n        }\n    ],\n    \"payment_method\": \"c\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n    \"message\": \"The selected payment method is invalid.\",\n    \"errors\": {\n        \"payment_method\": [\n            \"The selected payment method is invalid.\"\n        ]\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Update Order",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"status\": \"confirmed\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{admin_url_v1}}/orders/:order",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":order"
+                  ],
+                  "variable": [
+                    {
+                      "key": "order",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Order Canceled Success",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"status\": \"cancelled\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders/:order",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order",
+                          "value": ""
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Order updated successfully\",\n    \"data\": {\n        \"id\": 3,\n        \"user_id\": 2,\n        \"order_number\": \"ORD-69AAB90DCFD38-20260306\",\n        \"customer_name\": \"Omar Henidi\",\n        \"customer_email\": \"omarhenidi@gmail.com\",\n        \"status\": \"cancelled\",\n        \"payment_status\": \"un_paid\",\n        \"total_price\": 81.98,\n        \"currency\": \"USD\",\n        \"created_at\": \"2026-03-06T11:22:53+00:00\",\n        \"updated_at\": \"2026-03-06T11:31:40+00:00\",\n        \"items\": [\n            {\n                \"id\": 5,\n                \"product_id\": 3,\n                \"product_name\": \"Product C\",\n                \"quantity\": 2,\n                \"price\": 15.99,\n                \"line_total\": 31.98\n            },\n            {\n                \"id\": 6,\n                \"product_id\": 2,\n                \"product_name\": \"Product B\",\n                \"quantity\": 2,\n                \"price\": 25,\n                \"line_total\": 50\n            }\n        ]\n    }\n}"
+                },
+                {
+                  "name": "Order Canceled Error",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"status\": \"cancelled\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders/:order",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order",
+                          "value": ""
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": false,\n    \"message\": \"No query results for model [App\\\\Models\\\\Order] :order\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Delete Order",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{admin_url_v1}}/orders/:order",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":order"
+                  ],
+                  "variable": [
+                    {
+                      "key": "order",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Order Delete Success",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"status\": \"cancelled\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders/:order",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order",
+                          "value": ""
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Order deleted successfully.\",\n    \"data\": []\n}"
+                },
+                {
+                  "name": "Order Delete Error",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"status\": \"cancelled\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders/:order",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order",
+                          "value": ""
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": false,\n    \"message\": \"No query results for model [App\\\\Models\\\\Order] :order\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Users",
+          "item": [
+            {
+              "name": "List Users",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{admin_url_v1}}/users",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "List Users",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{admin_url_v1}}/users",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "users"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Users retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"admin\",\n            \"email\": \"admin@gmail.com\",\n            \"roles\": [\n                \"admin\"\n            ]\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Omar Henidi\",\n            \"email\": \"omarhenidi@gmail.com\",\n            \"roles\": []\n        }\n    ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "Show User",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{admin_url_v1}}/users/:user",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":user"
+                  ],
+                  "variable": [
+                    {
+                      "key": "user",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Show User",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{admin_url_v1}}/users/:user",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":user"
+                      ],
+                      "variable": [
+                        {
+                          "key": "user",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"User retrieved successfully\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"admin\",\n        \"email\": \"admin@gmail.com\",\n        \"roles\": [\n            \"admin\"\n        ]\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Create User",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"karim\",\n    \"email\": \"karim@gmail.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"roles\": [\n        \"client\"\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{admin_url_v1}}/users",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Create User",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"name\": \"admin\",\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"roles\": [\n        \"admin\"\n    ]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{admin_url_v1}}/users",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "users"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"User created successfully.\",\n    \"data\": {\n        \"id\": 3,\n        \"name\": \"karim\",\n        \"email\": \"karim@gmail.com\"\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Update User",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"karim samir\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{admin_url_v1}}/users/:user",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":user"
+                  ],
+                  "variable": [
+                    {
+                      "key": "user",
+                      "value": "3"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Update User",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"name\": \"admin\",\n    \"email\": \"admin@gmail.com\",\n    \"roles\": [\n        \"admin\"\n    ]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{admin_url_v1}}/users/:user",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":user"
+                      ],
+                      "variable": [
+                        {
+                          "key": "user",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"User updated successfully.\",\n    \"data\": {\n        \"id\": 3,\n        \"name\": \"karim samir\",\n        \"email\": \"karim@gmail.com\",\n        \"roles\": [\n            \"client\"\n        ]\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Delete User",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{admin_url_v1}}/users/:user",
+                  "host": [
+                    "{{admin_url_v1}}"
+                  ],
+                  "path": [
+                    "users",
+                    ":user"
+                  ],
+                  "variable": [
+                    {
+                      "key": "user",
+                      "value": "3"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Delete User",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{admin_url_v1}}/users/:user",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":user"
+                      ],
+                      "variable": [
+                        {
+                          "key": "user",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"User deleted successfully.\",\n    \"data\": []\n}"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{admin_token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Client",
+      "description": "Client API. Requires JWT (Bearer token). Endpoints: auth (register, login, me), orders (CRUD, list paginated with status filter), products (list paginated, show), checkout, payments (process, list). Set {{client_url_v1}} (e.g. http://localhost:8000/api/v1/client). Use Client > Auth > Login or Register to obtain client_token.",
+      "item": [
+        {
+          "name": "Auth",
+          "item": [
+            {
+              "name": "Login",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.environment.set(\"client_token\", pm.response.json().data.token);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\":\"omarhenidi@gmail.com\",\n    \"password\":\"password123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{client_url_v1}}/auth/login",
+                  "host": [
+                    "{{client_url_v1}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Login – Success (200)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"email\":\"omarhenidi@gmail.com\",\n    \"password\":\"12345678\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/auth/login",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Login successful\",\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3YxL2NsaWVudC9hdXRoL2xvZ2luIiwiaWF0IjoxNzcyNjgxNTI0LCJleHAiOjE3NzI2ODUxMjQsIm5iZiI6MTc3MjY4MTUyNCwianRpIjoibDUwckFiWWtPQjVyck9lZyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.xbfhQXKjuAQB8j5VW4HGOw4hbROq_WjNMBie0jX4NKY\",\n        \"token_type\": \"bearer\",\n        \"expires_in\": 3600,\n        \"user\": {\n            \"id\": 1,\n            \"name\": \"Omar Henidi\",\n            \"email\": \"omarhenidi@gmail.com\"\n        }\n    }\n}"
+                },
+                {
+                  "name": "Login – Invalid Credentials (401)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"email\":\"omarhenidi@gmail.com\",\n    \"password\":\"12345678\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/auth/login",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n  \"success\": false,\n  \"message\": \"Invalid credentials\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Register",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.environment.set(\"client_token\", pm.response.json().data.token);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\":\"Omar Henidi\",\n    \"email\":\"omarhenidi@gmail.com\",\n    \"password\":\"password123\",\n    \"password_confirmation\":\"password123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{client_url_v1}}/auth/register",
+                  "host": [
+                    "{{client_url_v1}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Register – Success (200)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"name\":\"Omar Henidi\",\n    \"email\":\"omarhenidi@gmail.com\",\n    \"password\":\"12345678\",\n    \"password_confirmation\":\"12345678\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/auth/register",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "register"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Registration successful\",\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3YxL2NsaWVudC9hdXRoL3JlZ2lzdGVyIiwiaWF0IjoxNzcyNjgyNjIxLCJleHAiOjE3NzI2ODYyMjEsIm5iZiI6MTc3MjY4MjYyMSwianRpIjoiaXhCMjNZZVQ5NWtacFNnbyIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.bYIKslPxl0zxlnKPVtS4GZ6FBaaT9BY3aqUrqw3Qt9E\",\n        \"token_type\": \"bearer\",\n        \"expires_in\": 3600,\n        \"user\": {\n            \"id\": 2,\n            \"name\": \"Omar Henidi\",\n            \"email\": \"omarhenidi@gmail.com\"\n        }\n    }\n}"
+                },
+                {
+                  "name": "Register – Validation Error (422)",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"name\":\"Omar Henidi\",\n    \"password\":\"12345678\",\n    \"password_confirmation\":\"12345678\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/auth/register",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "register"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n  \"message\": \"The email field is required.\",\n  \"errors\": {\n    \"email\": [\"The email field is required.\"]\n  }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Auth",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{client_url_v1}}/auth/me",
+                  "host": [
+                    "{{client_url_v1}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "me"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Auth",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{client_url_v1}}/auth/me",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "me"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"User retrieved successfully\",\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Omar Henidi\",\n        \"email\": \"omarhenidi@gmail.com\"\n    }\n}"
+                }
+              ]
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Products",
+          "item": [
+            {
+              "name": "List Products",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{client_url_v1}}/products",
+                  "host": [
+                    "{{client_url_v1}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "List Products Success (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{admin_url_v1}}/products",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "products"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Products retrieved successfully\",\n    \"data\": {\n        \"data\": [\n            {\n                \"id\": 3,\n                \"name\": \"Product C\",\n                \"description\": \"Sample product C for orders.\",\n                \"price\": 15.99,\n                \"created_at\": \"2026-03-06T11:45:34+00:00\",\n                \"updated_at\": \"2026-03-06T11:45:34+00:00\"\n            },\n            {\n                \"id\": 2,\n                \"name\": \"Product B\",\n                \"description\": \"Sample product B for orders.\",\n                \"price\": 25,\n                \"created_at\": \"2026-03-06T11:45:34+00:00\",\n                \"updated_at\": \"2026-03-06T11:45:34+00:00\"\n            },\n            {\n                \"id\": 1,\n                \"name\": \"Product A\",\n                \"description\": \"Sample product A for orders.\",\n                \"price\": 10.5,\n                \"created_at\": \"2026-03-06T11:45:34+00:00\",\n                \"updated_at\": \"2026-03-06T11:45:34+00:00\"\n            }\n        ],\n        \"meta\": {\n            \"current_page\": 1,\n            \"last_page\": 1,\n            \"per_page\": 15,\n            \"total\": 3\n        }\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Show Product",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{client_url_v1}}/products/:product",
+                  "host": [
+                    "{{client_url_v1}}"
+                  ],
+                  "path": [
+                    "products",
+                    ":product"
+                  ],
+                  "variable": [
+                    {
+                      "key": "product",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Show Product Success (200)",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{admin_url_v1}}/products/:product",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "products",
+                        ":product"
+                      ],
+                      "variable": [
+                        {
+                          "key": "product",
+                          "value": "2"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Product retrieved successfully\",\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Product B\",\n        \"description\": \"Sample product B for orders.\",\n        \"price\": 25,\n        \"created_at\": \"2026-03-05T04:21:43+00:00\",\n        \"updated_at\": \"2026-03-05T04:21:43+00:00\"\n    }\n}"
+                },
+                {
+                  "name": "Show Product Error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{admin_url_v1}}/products/:product",
+                      "host": [
+                        "{{admin_url_v1}}"
+                      ],
+                      "path": [
+                        "products",
+                        ":product"
+                      ],
+                      "variable": [
+                        {
+                          "key": "product",
+                          "value": "5"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n    \"success\": false,\n    \"message\": \"No query results for model [App\\\\Models\\\\Product] 1\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Orders",
+          "item": [
+            {
+              "name": "List Orders",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{client_url_v1}}/orders?status=pending&page=true",
+                  "host": [
+                    "{{client_url_v1}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "pending"
+                    },
+                    {
+                      "key": "page",
+                      "value": "true",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "List Orders Success",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Orders retrieved successfully.\",\n    \"data\": {\n        \"data\": [\n            {\n                \"id\": 3,\n                \"user_id\": 2,\n                \"order_number\": \"ORD-69AAC545C3EC6-20260306\",\n                \"customer_name\": \"Omar Henidi\",\n                \"customer_email\": \"omarhenidi@gmail.com\",\n                \"status\": \"pending\",\n                \"payment_status\": \"un_paid\",\n                \"total_price\": 81.98,\n                \"currency\": \"USD\",\n                \"created_at\": \"2026-03-06T12:15:01+00:00\",\n                \"updated_at\": \"2026-03-06T12:15:01+00:00\",\n                \"items\": [\n                    {\n                        \"id\": 5,\n                        \"product_id\": 3,\n                        \"product_name\": \"Product C\",\n                        \"quantity\": 2,\n                        \"price\": 15.99,\n                        \"line_total\": 31.98\n                    },\n                    {\n                        \"id\": 6,\n                        \"product_id\": 2,\n                        \"product_name\": \"Product B\",\n                        \"quantity\": 2,\n                        \"price\": 25,\n                        \"line_total\": 50\n                    }\n                ],\n                \"transactions\": []\n            }\n        ],\n        \"meta\": {\n            \"current_page\": 1,\n            \"last_page\": 1,\n            \"per_page\": 15,\n            \"total\": 1\n        }\n    }\n}"
+                },
+                {
+                  "name": "List Orders Error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{ \n    \"name\": \"Error 401\", \"code\": 401, \"body\": \"{\"success\": false,n  \"message\": \"Unauthenticated\"}\" \n}\n"
+                }
+              ]
+            },
+            {
+              "name": "Show Order",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{client_url_v1}}/orders/:order",
+                  "host": [
+                    "{{client_url_v1}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":order"
+                  ],
+                  "variable": [
+                    {
+                      "key": "order",
+                      "value": "3"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Show Order Success",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders/:order",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Order retrieved successfully\",\n    \"data\": {\n        \"id\": 1,\n        \"user_id\": 2,\n        \"order_number\": \"ORD-69A9119BCD118-20260305\",\n        \"customer_name\": \"Omar Henidi\",\n        \"customer_email\": \"omarhenidi@gmail.com\",\n        \"status\": \"pending\",\n        \"payment_status\": \"un_paid\",\n        \"total_price\": 129.98,\n        \"currency\": \"USD\",\n        \"created_at\": \"2026-03-05T05:16:11+00:00\",\n        \"updated_at\": \"2026-03-05T05:16:11+00:00\",\n        \"items\": [\n            {\n                \"id\": 1,\n                \"product_id\": null,\n                \"product_name\": \"Updated Product Name\",\n                \"quantity\": 2,\n                \"price\": 39.99,\n                \"line_total\": 79.98\n            },\n            {\n                \"id\": 2,\n                \"product_id\": 2,\n                \"product_name\": \"Product B\",\n                \"quantity\": 2,\n                \"price\": 25,\n                \"line_total\": 50\n            }\n        ],\n        \"transactions\": []\n    }\n}"
+                },
+                {
+                  "name": "Show Order Error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders/:order",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": false,\n    \"message\": \"No query results for model [App\\\\Models\\\\Order] :order\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "Create Order",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"items\": [\n        {\n            \"product_id\": 3,\n            \"quantity\": 2\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 2\n        }\n    ],\n    \"payment_method\": \"credit_card\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{client_url_v1}}/orders",
+                  "host": [
+                    "{{client_url_v1}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Create Order Success",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"items\": [\n        {\n            \"product_id\": 3,\n            \"quantity\": 2\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 2\n        }\n    ]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": null
+                },
+                {
+                  "name": "Create Order Error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"items\": [\n        {\n            \"product_id\": 3,\n            \"quantity\": 2\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 2\n        }\n    ],\n    \"payment_method\": \"c\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": null,
+                  "header": null,
+                  "cookie": [],
+                  "body": "{\n    \"message\": \"The selected payment method is invalid.\",\n    \"errors\": {\n        \"payment_method\": [\n            \"The selected payment method is invalid.\"\n        ]\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Canceled Order",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"status\": \"cancelled\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{client_url_v1}}/orders/:order",
+                  "host": [
+                    "{{client_url_v1}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":order"
+                  ],
+                  "variable": [
+                    {
+                      "key": "order",
+                      "value": "3"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Order Canceled Success",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"status\": \"cancelled\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders/:order",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order",
+                          "value": ""
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": true,\n    \"message\": \"Order updated successfully\",\n    \"data\": {\n        \"id\": 3,\n        \"user_id\": 2,\n        \"order_number\": \"ORD-69AAB90DCFD38-20260306\",\n        \"customer_name\": \"Omar Henidi\",\n        \"customer_email\": \"omarhenidi@gmail.com\",\n        \"status\": \"cancelled\",\n        \"payment_status\": \"un_paid\",\n        \"total_price\": 81.98,\n        \"currency\": \"USD\",\n        \"created_at\": \"2026-03-06T11:22:53+00:00\",\n        \"updated_at\": \"2026-03-06T11:31:40+00:00\",\n        \"items\": [\n            {\n                \"id\": 5,\n                \"product_id\": 3,\n                \"product_name\": \"Product C\",\n                \"quantity\": 2,\n                \"price\": 15.99,\n                \"line_total\": 31.98\n            },\n            {\n                \"id\": 6,\n                \"product_id\": 2,\n                \"product_name\": \"Product B\",\n                \"quantity\": 2,\n                \"price\": 25,\n                \"line_total\": 50\n            }\n        ]\n    }\n}"
+                },
+                {
+                  "name": "Order Canceled Error",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"status\": \"cancelled\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{client_url_v1}}/orders/:order",
+                      "host": [
+                        "{{client_url_v1}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order",
+                          "value": ""
+                        }
+                      ]
+                    }
+                  },
+                  "_postman_previewlanguage": "",
+                  "header": [],
+                  "cookie": [
+                    {
+                      "expires": "Invalid Date",
+                      "domain": "",
+                      "path": ""
+                    }
+                  ],
+                  "body": "{\n    \"success\": false,\n    \"message\": \"No query results for model [App\\\\Models\\\\Order] :order\"\n}"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{client_token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
