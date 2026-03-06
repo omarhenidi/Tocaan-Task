@@ -1,4 +1,4 @@
-# Order & Payment API
+# Tocaan Task
 
 Laravel API for orders and payments. Client and Admin both use JWT (Bearer token). New payment methods: add a gateway class and register it in config.
 
